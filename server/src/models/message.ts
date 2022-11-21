@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { Schema } from 'mongoose';
 
-interface IMsg {
+export interface IMsg {
     postedAt: Date;
     msgTitle: String;
     msgBody: String;
