@@ -2,10 +2,9 @@ import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
 import passport from 'passport'
-import local from 'passport-local'
-import jwtstrat from 'passport-jwt'
-import router from './routes/auth'
-
+import login from './routes/login'
+import posts from './routes/posts'
+import './util/auth'
 
 const app = express()
 const mongoDB: string = process.env.DB!
@@ -14,13 +13,9 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use('/api', router)
+app.use('/', login)
+app.use('/api', passport.authenticate('jwt', {session: false}, posts))
 
-app.get('/' , (req , res) => {
-    res.json({
-      message:' hi asdfasdf dd'
-    })
-})
 
 app.listen(3000, () =>
   console.log(`Example app listening on port 3000!`),
