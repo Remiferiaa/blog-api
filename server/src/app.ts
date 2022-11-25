@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import login from './routes/login'
 import posts from './routes/posts'
-import './util/auth'
+import './middleware/auth'
 
 const app = express()
 const mongoDB: string = process.env.DB!
