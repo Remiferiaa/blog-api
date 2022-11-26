@@ -3,7 +3,7 @@ import user from '../models/user';
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
-const user_login_post = async (req: Request, res: Response, next: NextFunction) => {
+export const user_login_post = async (req: Request, res: Response, next: NextFunction) => {
     const owner = await user.findOne({ username: req.body.username}).exec()
 
     if (!owner) {
@@ -27,5 +27,5 @@ const user_login_post = async (req: Request, res: Response, next: NextFunction) 
         token
     })
 }
-export default { user_login_post } 
+
 
