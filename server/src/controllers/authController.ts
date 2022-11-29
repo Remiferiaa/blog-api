@@ -22,7 +22,7 @@ export const user_login_post = async (req: Request, res: Response, next: NextFun
 
     const token = jwt.sign({owner}, process.env.SECRET!)
 
-    return res.json({
+    res.json({
         username: owner?.username,
         token
     })
