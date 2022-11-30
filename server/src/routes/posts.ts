@@ -1,23 +1,23 @@
 import express from 'express'
+import { post_commentlist_get, post_commentlist_post, post_comment_delete, post_comment_get, post_delete, post_get, post_put } from '../controllers/postController';
 
 const router = express.Router();
 
-router.get('/posts')
+router.route('/posts')
+    .get(post_commentlist_get)
+    .post(post_commentlist_post)
 
-router.post('/posts')
+router.route('/posts/:postid')
+    .get(post_get)
+    .put(post_put)
+    .delete(post_delete)
 
-router.get('/posts/:postid')
+router.route('/posts/:postid/comments')
+    .get(post_commentlist_get)
+    .post(post_commentlist_post)
 
-router.put('/posts/:postid')
-
-router.delete('/posts/:postid')
-
-router.get('/posts/:postid/comments')
-
-router.post('/posts/:postid/comments')
-
-router.get('/posts/:postid/comments/:commentid')
-
-router.delete('/posts/:postid/comments/:commentid')
+router.route('/posts/:postid/comments/:commentid')
+    .get(post_comment_get)
+    .delete(post_comment_delete)
 
 export default router;
