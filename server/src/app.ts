@@ -14,7 +14,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use('/', login)
-app.use('/api', passport.authenticate('jwt', {session: false}, posts))
+app.use('/api', passport.authenticate('jwt', {session: false}), posts)
 
 
 app.listen(3000, () =>
