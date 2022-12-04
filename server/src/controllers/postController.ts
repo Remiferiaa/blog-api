@@ -7,14 +7,15 @@ import { body, validationResult } from 'express-validator'
 export const postlist_get = async (req: Request, res: Response, next: NextFunction) => {
     const content = await posts.find().populate('postComments').exec()
 
-    if (!content) {
-        return res.status(404).json({
-            error: 404,
-            message: 'No Posts Found'
+    if (content.length) {
+        return res.status(200).json({
+            content
         })
+
     }
-    res.status(200).json({
-        content
+    return res.status(404).json({
+        error: 404,
+        message: 'No Posts Found'
     })
 }
 
@@ -23,10 +24,11 @@ export const postlist_post = [
     body('postBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
     (req: Request, res: Response, next: NextFunction) => {
+        const {postTitle, postBody} = req.body
         const errors = validationResult(req)
         const post = new posts({
-            title: req.body.postTitle,
-            content: req.body.postBody
+            postTitle,
+            postBody
         })
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -64,10 +66,11 @@ export const post_put = [
     body('postBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
     (req: Request, res: Response, next: NextFunction) => {
+        const {postTitle, postBody} = req.body
         const errors = validationResult(req)
         const post = new posts({
-            title: req.body.postTitle,
-            content: req.body.postBody
+            postTitle,
+            postBody
         })
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -120,10 +123,11 @@ export const post_commentlist_post = [
     body('msgBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
     (req: Request, res: Response, next: NextFunction) => {
+        const {msgTitle, msgBody} = req.body
         const errors = validationResult(req)
         const msg = new message({
-            title: req.body.msgTitle,
-            content: req.body.msgBody
+            msgTitle,
+            msgBody
         })
         if (!errors.isEmpty()) {
             return res.status(400).json({

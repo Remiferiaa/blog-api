@@ -40,9 +40,7 @@ app.use(function (err: ReqErr, req: Request, res: Response, next: NextFunction) 
 
   res.status(err.status || 500).json({
     error: err.status,
-    message: err.message,
+    message: err.message
   });
 });
-
-
 
