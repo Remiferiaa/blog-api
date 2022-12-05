@@ -24,7 +24,7 @@ export const postlist_post = [
     body('postBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
     (req: Request, res: Response, next: NextFunction) => {
-        const {postTitle, postBody} = req.body
+        const { postTitle, postBody } = req.body
         const errors = validationResult(req)
         const post = new posts({
             postTitle,
@@ -66,11 +66,12 @@ export const post_put = [
     body('postBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
     (req: Request, res: Response, next: NextFunction) => {
-        const {postTitle, postBody} = req.body
+        const { postTitle, postBody } = req.body
         const errors = validationResult(req)
         const post = new posts({
             postTitle,
-            postBody
+            postBody,
+            _id: req.params.postid
         })
         if (!errors.isEmpty()) {
             return res.status(400).json({
@@ -79,8 +80,9 @@ export const post_put = [
         } else {
             posts.findByIdAndUpdate(req.params.postid, post, {}, function (err, result) {
                 if (err) {
-                    res.status(400).json({
-                        message: 'Post Update Failed'
+                    return res.status(400).json({
+                        message: 'Post Update Failed',
+                        test: req.params
                     })
                 }
                 res.status(200).json({
@@ -91,19 +93,19 @@ export const post_put = [
     }
 ]
 
-export const post_delete = (req: Request, res: Response, next: NextFunction) => {
-    posts.findByIdAndDelete({ _id: req.params.postid }, {}, function (err, result) {
-        if (err) {
-            res.status(400).json({
-                message: 'delete failed'
-            })
-        } else {
-            res.status(200).json({
-                message: 'Post Sucessfully Deleted along with all associated comments'
-            })
-        }
+export const post_delete = async (req: Request, res: Response, next: NextFunction) => {
+    const content = await posts.findById(req.params.postid ).exec()
+    const deletePost = await content!.deleteOne()
+    if (!deletePost) {
+        return res.status(400).json({
+            message: 'delete failed'
+        })
+    }
+    res.status(200).json({
+        message: 'Post Sucessfully Deleted along with all associated comments'
     })
 }
+
 
 export const post_commentlist_get = async (req: Request, res: Response, next: NextFunction) => {
     const content = await posts.findById(req.params.postid).populate('postComments').exec()
@@ -114,7 +116,7 @@ export const post_commentlist_get = async (req: Request, res: Response, next: Ne
         })
     }
     res.status(200).json({
-        content
+        comments: content.postComments
     })
 }
 
@@ -123,11 +125,12 @@ export const post_commentlist_post = [
     body('msgBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
     (req: Request, res: Response, next: NextFunction) => {
-        const {msgTitle, msgBody} = req.body
+        const { msgTitle, msgBody } = req.body
         const errors = validationResult(req)
         const msg = new message({
             msgTitle,
-            msgBody
+            msgBody,
+            post: req.params.postid
         })
         if (!errors.isEmpty()) {
             return res.status(400).json({

@@ -16,16 +16,17 @@ const PostSchema = new Schema<IPosts>({
     postComments: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
 })
 
-function removeLinkDoc(doc: IPosts) {
-    message.remove({ _id: { $in: doc.postComments}})
-}
+PostSchema.pre('deleteOne', { document: true }, async function (next) {
+    const current = this
+    await message.deleteMany({ post: current._id })
+    next()
+})
+
 
 PostSchema
     .virtual('published')
     .get(function () {
         return this.postedAt.toLocaleDateString()
     })
-
-PostSchema.post('remove', removeLinkDoc)
 
 export default mongoose.model<IPosts>('Post', PostSchema)
