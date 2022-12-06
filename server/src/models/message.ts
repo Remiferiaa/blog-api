@@ -3,7 +3,7 @@ import { Schema, Types } from 'mongoose';
 import posts from './posts';
 import { DateTime } from 'luxon';
 
-export interface IMsg {
+interface IMsg {
     postedAt: Date;
     msgTitle: String;
     msgBody: String;

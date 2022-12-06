@@ -3,7 +3,7 @@ import { Schema} from 'mongoose';
 import message from './message';
 import {DateTime} from 'luxon'
 
-export interface IPosts {
+interface IPosts {
     postedAt: Date;
     postTitle: String;
     postBody: String;

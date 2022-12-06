@@ -1,5 +1,5 @@
 import message from '../models/message'
-import posts, { IPosts } from '../models/posts'
+import posts from '../models/posts'
 import { Request, Response, NextFunction } from 'express'
 import { body, validationResult } from 'express-validator'
 
@@ -141,7 +141,7 @@ export const post_commentlist_post = [
                 if (err) {
                     return next(err)
                 } else {
-                    posts.findOneAndUpdate({ _id: req.params.postid }, { $push: { postComments: msg } }, function (err: Error, result: IPosts) {
+                    posts.findByIdAndUpdate({ _id: req.params.postid }, { $push: { postComments: msg } }, function (err, result) {
                         if (err) {
                             return next(err)
                         }
