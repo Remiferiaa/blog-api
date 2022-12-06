@@ -6,7 +6,7 @@ export interface IPosts {
     postedAt: Date;
     postTitle: String;
     postBody: String;
-    postComments: Types.ObjectId;
+    postComments: Array<string>
 }
 
 const PostSchema = new Schema<IPosts>({
@@ -22,11 +22,15 @@ PostSchema.pre('deleteOne', { document: true }, async function (next) {
     next()
 })
 
-
 PostSchema
     .virtual('published')
     .get(function () {
         return this.postedAt.toLocaleDateString()
     })
 
+PostSchema.virtual('commentCount').get(function () {
+    return this.postComments.length
+});
+
+PostSchema.set('toJSON', { getters: false, virtuals: true })
 export default mongoose.model<IPosts>('Post', PostSchema)
