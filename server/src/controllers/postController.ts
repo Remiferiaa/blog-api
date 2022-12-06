@@ -40,7 +40,7 @@ export const postlist_post = [
                     return next(err)
                 }
                 res.status(200).json({
-                    message: 'post succesfully created'
+                    message: 'Post Created Succesfully'
                 })
             })
         }
@@ -94,11 +94,11 @@ export const post_put = [
 ]
 
 export const post_delete = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await posts.findById(req.params.postid ).exec()
+    const content = await posts.findById(req.params.postid).exec()
     const deletePost = await content!.deleteOne()
     if (!deletePost) {
         return res.status(400).json({
-            message: 'delete failed'
+            message: 'Post failed to delete'
         })
     }
     res.status(200).json({
@@ -112,7 +112,7 @@ export const post_commentlist_get = async (req: Request, res: Response, next: Ne
     if (!content) {
         return res.status(404).json({
             error: 404,
-            message: 'Comments in Post Not Found'
+            message: 'No comments found in this post'
         })
     }
     res.status(200).json({
@@ -146,7 +146,7 @@ export const post_commentlist_post = [
                             return next(err)
                         }
                         res.status(200).json({
-                            message: 'message succesfully created'
+                            message: 'Message created succesfully'
                         })
                     })
                 }
@@ -168,16 +168,15 @@ export const post_comment_get = async (req: Request, res: Response, next: NextFu
     })
 }
 
-export const post_comment_delete = (req: Request, res: Response, next: NextFunction) => {
-    message.findByIdAndDelete({ _id: req.params.commentid }, {}, function (err, result) {
-        if (err) {
-            res.status(400).json({
-                message: 'delete failed'
-            })
-        } else {
-            res.status(200).json({
-                message: 'Comment Deleted Sucessfully'
-            })
-        }
+export const post_comment_delete = async (req: Request, res: Response, next: NextFunction) => {
+    const content = await message.findById(req.params.commentid).exec() 
+    const deleteMsg = await content?.deleteOne()
+    if (!deleteMsg) {
+        return res.status(400).json({
+            message: 'Failed to delete comment'
+        })
+    }
+    res.status(200).json({
+        message: 'Comment Deleted Sucessfully'
     })
 }
