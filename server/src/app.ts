@@ -8,6 +8,10 @@ import './middleware/auth'
 import { Request, Response, NextFunction } from 'express'
 import cors from 'cors'
 import createError from 'http-errors'
+import helmet from 'helmet'
+import compression from 'compression'
+import logger from 'morgan'
+
 
 interface ReqErr {
   status: number
@@ -22,6 +26,9 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+app.use(logger('dev'))
+app.use(compression())
+app.use(helmet())
 app.use('/', login)
 app.use('/api', passport.authenticate('jwt', {session: false}), posts)
 
