@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
-import { Schema, Types } from 'mongoose';
+import { Schema} from 'mongoose';
 import message from './message';
+import {DateTime} from 'luxon'
 
 export interface IPosts {
     postedAt: Date;
@@ -25,7 +26,7 @@ PostSchema.pre('deleteOne', { document: true }, async function (next) {
 PostSchema
     .virtual('published')
     .get(function () {
-        return this.postedAt.toLocaleDateString()
+        return DateTime.fromJSDate(this.postedAt).toLocaleString(DateTime.DATE_MED);
     })
 
 PostSchema.virtual('commentCount').get(function () {
@@ -33,4 +34,5 @@ PostSchema.virtual('commentCount').get(function () {
 });
 
 PostSchema.set('toJSON', { getters: false, virtuals: true })
+
 export default mongoose.model<IPosts>('Post', PostSchema)
