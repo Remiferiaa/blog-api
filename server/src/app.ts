@@ -4,19 +4,39 @@ import mongoose from 'mongoose'
 import passport from 'passport'
 import login from './routes/login'
 import posts from './routes/posts'
-import './middleware/auth'
 import { Request, Response, NextFunction } from 'express'
 import cors from 'cors'
 import createError from 'http-errors'
 import helmet from 'helmet'
 import compression from 'compression'
 import logger from 'morgan'
-
+import jwt from 'passport-jwt'
+import user, { IUser } from './models/user'
 
 interface ReqErr {
   status: number
   message: string
 }
+
+const JwtStrategy = jwt.Strategy
+const ExtractJwt = jwt.ExtractJwt
+const opts = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.SECRET,
+}
+
+passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
+    user.findOne({id: jwt_payload.sub}, function (err: Error, user: IUser) {
+        if (err) {
+            return done(err, false);
+        }
+        if (user) {
+            return done(null, user);
+        } else {
+            return done(null, false);
+        }
+    });
+}));
 
 const app = express()
 const mongoDB: string = process.env.DB!
@@ -30,7 +50,7 @@ app.use(logger('dev'))
 app.use(compression())
 app.use(helmet())
 app.use('/', login)
-app.use('/api', passport.authenticate('jwt', {session: false}), posts)
+app.use('/api', posts)
 
 
 app.listen(3000, () =>
