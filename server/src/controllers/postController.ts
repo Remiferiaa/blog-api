@@ -5,7 +5,7 @@ import { body, validationResult } from 'express-validator'
 
 
 export const postlist_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await posts.find().populate('postComments').exec()
+    const content = await posts.find().exec()
 
     if (content.length) {
         return res.status(200).json({
@@ -82,7 +82,6 @@ export const post_put = [
                 if (err) {
                     return res.status(400).json({
                         message: 'Post Update Failed',
-                        test: req.params
                     })
                 }
                 res.status(200).json({
