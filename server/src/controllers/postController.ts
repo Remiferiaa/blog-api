@@ -121,14 +121,14 @@ export const post_commentlist_get = async (req: Request, res: Response, next: Ne
 }
 
 export const post_commentlist_post = [
-    body('msgTitle').trim().isLength({ min: 1 }).escape().withMessage("Title can't be empty"),
+    body('postedBy').trim().isLength({ min: 1 }).escape().withMessage("Username can't be empty"),
     body('msgBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
     (req: Request, res: Response, next: NextFunction) => {
-        const { msgTitle, msgBody } = req.body
+        const { postedBy, msgBody } = req.body
         const errors = validationResult(req)
         const msg = new message({
-            msgTitle,
+            postedBy,
             msgBody,
             post: req.params.postid
         })

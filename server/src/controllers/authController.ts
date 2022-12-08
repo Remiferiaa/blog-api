@@ -20,7 +20,7 @@ export const user_login_post = async (req: Request, res: Response, next: NextFun
         })
     }
 
-    const token = jwt.sign({owner}, process.env.SECRET!, {expiresIn: '6h'})
+    const token = jwt.sign({owner}, process.env.SECRET!, {expiresIn: '30s'})
 
     res.json({
         username: owner?.username,
