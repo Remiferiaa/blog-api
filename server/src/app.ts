@@ -26,7 +26,7 @@ const opts = {
 }
 
 passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
-    user.findOne({id: jwt_payload.sub}, function (err: Error, user: IUser) {
+    user.findOne({_id: jwt_payload.owner._id}, function (err: Error, user: IUser) {
         if (err) {
             return done(err, false);
         }
