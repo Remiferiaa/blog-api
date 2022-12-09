@@ -15,7 +15,7 @@ router.route('/posts/:postid')
 
 router.route('/posts/:postid/comments')
     .get(post_commentlist_get)
-    .post(authVer, post_commentlist_post)
+    .post(post_commentlist_post)
 
 router.route('/posts/:postid/comments/:commentid')
     .get(post_comment_get)
