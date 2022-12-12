@@ -15,7 +15,7 @@ const PostSchema = new Schema<IPosts>({
     postTitle: { type: String, required: true },
     postBody: { type: String, required: true },
     postComments: [{ type: Schema.Types.ObjectId, ref: 'Message' }],
-})
+}, {id: false})
 
 PostSchema.pre('deleteOne', { document: true }, async function (next) {
     const current = this

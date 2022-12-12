@@ -15,7 +15,7 @@ const MessageSchema = new Schema<IMsg>({
     postedBy: { type: String, required: true },
     msgBody: { type: String, required: true },
     post: { type: Schema.Types.ObjectId, ref: 'Post' }
-})
+}, {id: false})
 
 MessageSchema.pre('deleteOne', { document: true }, async function (next) {
     const current = this

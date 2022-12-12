@@ -5,7 +5,7 @@ import { body, validationResult } from 'express-validator'
 
 
 export const postlist_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await posts.find().exec()
+    const content = await posts.find({}, '-__v').exec()
 
     if (content.length) {
         return res.status(200).json({
@@ -48,7 +48,7 @@ export const postlist_post = [
 ]
 
 export const post_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await posts.findById(req.params.postid).exec()
+    const content = await posts.findById(req.params.postid, '-__v').exec()
 
     if (!content) {
         return res.status(404).json({
@@ -107,7 +107,7 @@ export const post_delete = async (req: Request, res: Response, next: NextFunctio
 
 
 export const post_commentlist_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await posts.findById(req.params.postid).populate('postComments').exec()
+    const content = await message.find({post: req.params.postid}, '-__v -post').exec()
     if (!content) {
         return res.status(404).json({
             error: 404,
@@ -115,7 +115,7 @@ export const post_commentlist_get = async (req: Request, res: Response, next: Ne
         })
     }
     res.status(200).json({
-        comments: content.postComments
+        comments: content
     })
 }
 
@@ -155,7 +155,7 @@ export const post_commentlist_post = [
 ]
 
 export const post_comment_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await message.findById(req.params.commentid).exec()
+    const content = await message.findById(req.params.commentid, '-__v -post').exec()
     if (!content) {
         return res.status(404).json({
             error: 404,
