@@ -10,7 +10,7 @@ export interface IPost {
 
 export interface IComments {
     _id: string
-    msgTitle: string,
+    postedBy: string,
     msgBody: string,
     postedAt: string,
     posted: string
