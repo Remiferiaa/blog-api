@@ -2,10 +2,11 @@ import React, { Suspense, useEffect } from 'react'
 import useLink from '../../Hook/useLink'
 import { useParams } from 'react-router-dom'
 
+const Comments = React.lazy(() => import('../Comments/Comments'))
 const PostDetails = () => {
     const curPost = useParams()
     const { getPostDetail, data } = useLink()
-    const Comments = React.lazy(() => import('../Comments/Comments'))
+
 
     useEffect(() => {
         getPostDetail(curPost.postid!)
