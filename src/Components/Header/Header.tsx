@@ -2,11 +2,13 @@ import { Link } from 'react-router-dom'
 
 const Header = () => {
     return (
-        <div>
-            <Link to='/'>
-                Blog
-            </Link>
-        </div>
+        <header className='header'>
+            <div className='header-inner'>
+                <Link to='/'>
+                    Blog
+                </Link>
+            </div>
+        </header>
     )
 }
 

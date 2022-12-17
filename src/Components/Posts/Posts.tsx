@@ -10,24 +10,24 @@ const Posts = () => {
     }, [])
 
     return (
-        <div>
-            {postList.map((items) => {
-                return (
-                    <div key={items._id}>
-                        <Link to={`/posts/${items._id}`} className='relative'>
-                            <div>
-                                <p>{items.postTitle}</p>
-                            </div>
-                            <div>
-                                <p>{items.published}</p>
-                                <p>{items.postBody}</p>
-                                <p>{items.commentCount}</p>
-                            </div>
-                        </Link>
-                    </div>
-                )
-            })}
-        </div >
+        <div className='container'>
+            <div className='posts'>
+                {postList.map((items) => {
+                    return (
+                        <div key={items._id} className='post'>
+                            <Link to={`/posts/${items._id}`} className='relative'>
+                                <p className='post-date'>{items.published}</p>
+                                <p className='post-title'>{items.postTitle}</p>
+                                <p className='post-body'>{items.postBody}</p>
+                                <p className='post-comments'>{items.commentCount} Comments</p>
+                            </Link>
+                            <hr />
+                        </div>
+
+                    )
+                })}
+            </div >
+        </div>
     )
 }
 
