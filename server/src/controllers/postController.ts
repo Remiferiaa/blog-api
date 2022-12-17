@@ -2,21 +2,25 @@ import message from '../models/message'
 import posts from '../models/posts'
 import { Request, Response, NextFunction } from 'express'
 import { body, validationResult } from 'express-validator'
+import { nextTick } from 'process'
 
 
 export const postlist_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await posts.find({}, '-__v').exec()
+    try {
+        const content = await posts.find({}, '-__v').exec()
+        if (content.length) {
+            return res.status(200).json({
+                content
+            })
 
-    if (content.length) {
-        return res.status(200).json({
-            content
+        }
+        res.status(404).json({
+            error: 404,
+            message: 'No Posts Found'
         })
-
+    } catch (err) {
+        next(err)
     }
-    return res.status(404).json({
-        error: 404,
-        message: 'No Posts Found'
-    })
 }
 
 export const postlist_post = [
@@ -48,17 +52,21 @@ export const postlist_post = [
 ]
 
 export const post_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await posts.findById(req.params.postid, '-__v').exec()
+    try {
+        const content = await posts.findById(req.params.postid, '-__v').exec()
 
-    if (!content) {
-        return res.status(404).json({
-            error: 404,
-            message: 'Post Not Found'
+        if (!content) {
+            return res.status(404).json({
+                error: 404,
+                message: 'Post Not Found'
+            })
+        }
+        res.status(200).json({
+            content
         })
+    } catch (err) {
+        next(err)
     }
-    res.status(200).json({
-        content
-    })
 }
 
 export const post_put = [
@@ -93,30 +101,38 @@ export const post_put = [
 ]
 
 export const post_delete = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await posts.findById(req.params.postid).exec()
-    const deletePost = await content!.deleteOne()
-    if (!deletePost) {
-        return res.status(400).json({
-            message: 'Post failed to delete'
+    try {
+        const content = await posts.findById(req.params.postid).exec()
+        const deletePost = await content!.deleteOne()
+        if (!deletePost) {
+            return res.status(400).json({
+                message: 'Post failed to delete'
+            })
+        }
+        res.status(200).json({
+            message: 'Post Sucessfully Deleted along with all associated comments'
         })
+    } catch (err) {
+        next(err)
     }
-    res.status(200).json({
-        message: 'Post Sucessfully Deleted along with all associated comments'
-    })
 }
 
 
 export const post_commentlist_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await message.find({post: req.params.postid}, '-__v -post').exec()
-    if (!content) {
-        return res.status(404).json({
-            error: 404,
-            message: 'No comments found in this post'
+    try {
+        const content = await message.find({ post: req.params.postid }, '-__v -post').exec()
+        if (!content.length) {
+            return res.status(404).json({
+                error: 404,
+                message: 'No comments found in this post'
+            })
+        }
+        res.status(200).json({
+            comments: content
         })
+    } catch (err) {
+        next(err)
     }
-    res.status(200).json({
-        comments: content
-    })
 }
 
 export const post_commentlist_post = [
@@ -155,27 +171,35 @@ export const post_commentlist_post = [
 ]
 
 export const post_comment_get = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await message.findById(req.params.commentid, '-__v -post').exec()
-    if (!content) {
-        return res.status(404).json({
-            error: 404,
-            message: 'Comment Not Found'
+    try {
+        const content = await message.findById(req.params.commentid, '-__v -post').exec()
+        if (!content) {
+            return res.status(404).json({
+                error: 404,
+                message: 'Comment Not Found'
+            })
+        }
+        res.status(200).json({
+            content
         })
+    } catch (err) {
+        next(err)
     }
-    res.status(200).json({
-        content
-    })
 }
 
 export const post_comment_delete = async (req: Request, res: Response, next: NextFunction) => {
-    const content = await message.findById(req.params.commentid).exec() 
-    const deleteMsg = await content?.deleteOne()
-    if (!deleteMsg) {
-        return res.status(400).json({
-            message: 'Failed to delete comment'
+    try {
+        const content = await message.findById(req.params.commentid).exec()
+        const deleteMsg = await content?.deleteOne()
+        if (!deleteMsg) {
+            return res.status(400).json({
+                message: 'Failed to delete comment'
+            })
+        }
+        res.status(200).json({
+            message: 'Comment Deleted Sucessfully'
         })
+    } catch (err) {
+        next(err)
     }
-    res.status(200).json({
-        message: 'Comment Deleted Sucessfully'
-    })
 }
