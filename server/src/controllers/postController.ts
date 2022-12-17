@@ -2,8 +2,6 @@ import message from '../models/message'
 import posts from '../models/posts'
 import { Request, Response, NextFunction } from 'express'
 import { body, validationResult } from 'express-validator'
-import { nextTick } from 'process'
-
 
 export const postlist_get = async (req: Request, res: Response, next: NextFunction) => {
     try {
