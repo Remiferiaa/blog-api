@@ -7,25 +7,26 @@ const PostDetails = () => {
     const curPost = useParams()
     const { getPostDetail, data } = useLink()
 
-
     useEffect(() => {
         getPostDetail(curPost.postid!)
-    }, [])
+    }, [curPost.postid])
 
     return (
-        <div>
-            <article>
-                <header>
-                    <h1>{data?.postTitle}</h1>
-                    <time>{data?.published}</time>
-                </header>
-                <p>{data?.postBody}</p>
-            </article>
-            <hr/>
-            <Suspense fallback={<p>Loading Comments...</p>}>
-                <Comments />
-            </Suspense>
-        </div>
+        <>
+            <div className='container comms'>
+                <article>
+                    <div>
+                        <h1>{data?.postTitle}</h1>
+                        <time>{data?.published}</time>
+                    </div>
+                    <p>{data?.postBody}</p>
+                </article>
+                <hr />
+                <Suspense fallback={<p>Loading Comments...</p>}>
+                    <Comments />
+                </Suspense>
+            </div>
+        </>
     )
 }
 

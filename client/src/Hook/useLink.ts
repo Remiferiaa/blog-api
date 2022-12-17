@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from 'react'
+import {useState } from 'react'
 import { IPost, IComments } from "../types/db";
 
 function useLink() {
@@ -40,16 +40,14 @@ function useLink() {
 
     async function newComments(postid: string, postedBy: string, msgBody: string) { 
         try {
-            const res = await axios.post(`${baseURL}/api/posts/${postid}/comments`, {postedBy, msgBody})
-            const commRes = await axios.get(`${baseURL}/api/posts/${postid}/comments`)
-            const content = await JSON.parse(JSON.stringify(commRes.data))
-            setComments(current => [...current, content.comments])
+            await axios.post(`${baseURL}/api/posts/${postid}/comments`, {postedBy, msgBody})
+            getComments(postid)
         } catch (err) {
             console.error(err)
         }
     }
 
-    return { getPosts, getPostDetail, getComments, newComments, postList, comments, data }
+    return { getPosts, getPostDetail, getComments, newComments, postList, comments, data}
 }
 
 export default useLink
