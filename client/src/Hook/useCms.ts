@@ -5,46 +5,30 @@ function useCms() {
     const config = {
         headers: {
             Authorization: 'Bearer ' + localStorage.getItem('token')
-          }
+        }
     }
 
     function login(username: string, password: string) {
-        return axios.post(`${baseURL}/login`, {username, password})
+        return axios.post(`${baseURL}/login`, { username, password })
     }
 
-    async function newPosts(postid: string, postTitle: string, postBody: string) {
-        try {
-            await axios.post(`${baseURL}/api/posts/${postid}/comments`, {postTitle, postBody}, config)
-        } catch (err) {
-            console.error(err)
-        }
+    function newPosts(postTitle: string, postBody: string) {
+        return axios.post(`${baseURL}/api/posts/`, { postTitle, postBody }, config)
     }
 
-    async function editPosts(postid: string, postedBy: string, msgBody: string) {
-        try {
-            await axios.put(`${baseURL}/api/posts/${postid}/comments`, {postedBy, msgBody}, config)
-        } catch (err) {
-            console.error(err)
-        }
+    function editPosts(postid: string, postTitle: string, postBody: string) {
+        return axios.put(`${baseURL}/api/posts/${postid}`, { postTitle, postBody }, config)
     }
 
-    async function deletePost(postid: string) {
-        try {
-            const res = await axios.delete(`${baseURL}/api/posts/${postid}`, config)
-        } catch (err) {
-            console.error(err)
-        }
+    function deletePost(postid: string) {
+        return axios.delete(`${baseURL}/api/posts/${postid}`, config)
     }
 
-    async function deleteComments(postid: string, commentid: string) { 
-        try {
-            await axios.delete(`${baseURL}/api/posts/${postid}/comments/${commentid}`, config)
-        } catch (err) {
-            console.error(err)
-        }
+    function deleteComments(postid: string, commentid: string) {
+        return axios.delete(`${baseURL}/api/posts/${postid}/comments/${commentid}`, config)
     }
 
-    return {login, newPosts, editPosts, deletePost, deleteComments}
+    return { login, newPosts, editPosts, deletePost, deleteComments }
 }
 
 export default useCms
