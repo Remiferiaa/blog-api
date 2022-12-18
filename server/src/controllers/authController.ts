@@ -7,17 +7,10 @@ import passport from 'passport'
 export const user_login_post = async (req: Request, res: Response, next: NextFunction) => {
     const owner = await user.findOne({ username: req.body.username }).exec()
 
-    if (!owner) {
+    if (!owner || owner?.password !== req.body.password) {
         return res.status(401).json({
             error: 401,
-            message: 'Invalid User'
-        })
-    }
-
-    if (owner?.password !== req.body.password) {
-        return res.status(401).json({
-            error: 401,
-            message: 'Wrong Password'
+            message: 'Invalid User or password'
         })
     }
 
