@@ -15,3 +15,8 @@ export interface IComments {
     postedAt: string,
     posted: string
 }
+
+export interface resErr {
+    error: number,
+    message: string
+}
