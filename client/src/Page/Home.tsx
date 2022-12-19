@@ -3,12 +3,12 @@ import Hero from '../Components/Hero/hero'
 
 const Post = React.lazy(() => import('../Components/Posts/Posts'))
 
-const Home = () => {
+const Home = ({ status }: { status: string }) => {
     return (
         <>
             <Hero/>
             <Suspense fallback={<p>Loading Posts...</p>}>
-                <Post />
+                <Post status={status} />
             </Suspense>
         </>
     )
