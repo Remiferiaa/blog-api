@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import useCms from '../../Hook/useCms'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { AuthContext } from '../../Context/authContext'
 
 
 const Login = () => {
+    const {setAuth} = useContext(AuthContext)
     const navigate = useNavigate()
     const { login } = useCms()
     const [user, setUser] = useState('')
@@ -17,6 +19,7 @@ const Login = () => {
             const response = await login(user, pw)
             const content = await JSON.parse(JSON.stringify(response.data))
             localStorage.setItem('token', content.token)
+            setAuth(true)
             navigate('/')
         } catch (err) {
             if (axios.isAxiosError(err)) {

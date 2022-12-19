@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useLink from '../../Hook/useLink'
 import { Link } from 'react-router-dom'
 
-const Posts = () => {
+const Posts = ({ status }: { status: string }) => {
     const { postList, getPosts } = useLink()
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const Posts = () => {
                 {postList.map((items) => {
                     return (
                         <div key={items._id} className='post'>
-                            <Link to={`/posts/${items._id}`} className='relative'>
+                            <Link to={`/${status}/${items._id}`} className='relative'>
                                 <p className='post-date'>{items.published}</p>
                                 <p className='post-title'>{items.postTitle}</p>
                                 <p className='post-body'>{items.postBody}</p>
