@@ -74,17 +74,12 @@ export const post_put = [
     (req: Request, res: Response, next: NextFunction) => {
         const { postTitle, postBody } = req.body
         const errors = validationResult(req)
-        const post = new posts({
-            postTitle,
-            postBody,
-            _id: req.params.postid
-        })
         if (!errors.isEmpty()) {
             return res.status(400).json({
                 errors: errors.array()
             })
         } else {
-            posts.findByIdAndUpdate(req.params.postid, post, {}, function (err, result) {
+            posts.findByIdAndUpdate(req.params.postid, {postTitle: postTitle, postBody: postBody}, {}, function (err, result) {
                 if (err) {
                     return res.status(400).json({
                         message: 'Post Update Failed',
