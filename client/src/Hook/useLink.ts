@@ -47,7 +47,7 @@ function useLink() {
         }
     }
 
-    return { getPosts, getPostDetail, getComments, newComments, postList, comments, data}
+    return { getPosts, getPostDetail, getComments, newComments, postList, comments, data, setComments}
 }
 
 export default useLink

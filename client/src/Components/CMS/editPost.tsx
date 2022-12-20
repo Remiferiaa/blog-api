@@ -7,7 +7,7 @@ import axios from 'axios'
 const PostEdit = () => {
     const curPost = useParams()
     const navigate = useNavigate()
-    const { getPostDetail, data, comments, getComments } = useLink()
+    const { getPostDetail, data, comments, getComments, setComments } = useLink()
     const { editPosts, deletePost, deleteComments } = useCms()
     const [title, setTitle] = useState('')
     const [body, setBody] = useState('')
@@ -16,16 +16,20 @@ const PostEdit = () => {
     useEffect(() => {
         getPostDetail(curPost.postid!)
         getComments(curPost.postid!)
+    }, [curPost.postid])
+
+    useEffect(() => {
         if (data) {
             setTitle(data.postTitle)
             setBody(data.postBody)
         }
-    }, [curPost.postid])
+    }, [data])
 
     async function submit(e: React.FormEvent) {
         try {
             e.preventDefault()
             await editPosts(curPost.postid!, title, body)
+            navigate('/')
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 setErr(err.response?.data.message)
@@ -34,7 +38,6 @@ const PostEdit = () => {
             }
         }
     }
-
     async function delPost() {
         try {
             await deletePost(curPost.postid!)
@@ -51,6 +54,7 @@ const PostEdit = () => {
     async function delComm(id: string) {
         try {
             await deleteComments(curPost.postid!, id)
+            setComments(prev => prev.filter(item => item._id !== id))
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 setErr('Unauthorized')
