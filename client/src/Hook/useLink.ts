@@ -1,8 +1,10 @@
 import axios from "axios";
 import {useState } from 'react'
 import { IPost, IComments } from "../types/db";
+import { useNavigate } from "react-router-dom";
 
 function useLink() {
+    const navigate = useNavigate()
     const baseURL = process.env.REACT_APP_URL
     const [postList, setPostList] = useState<IPost[] | []>([])
     const [comments, setComments] = useState<IComments[] | []>([])
@@ -25,6 +27,7 @@ function useLink() {
             setData(content.content)
         } catch (err) {
             console.error(err)
+            navigate('/')
         }
     }
 

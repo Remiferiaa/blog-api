@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 
 const Comments = () => {
     const curPost = useParams()
-    const { comments, getComments, newComments} = useLink()
+    const { comments, getComments, newComments } = useLink()
     const [poster, setPoster] = useState('')
     const [postBody, setPostBody] = useState('')
 
@@ -20,7 +20,17 @@ const Comments = () => {
     }
 
     return (
-        <div>
+        <>
+            <div className='comm-post'>
+                <p>Post a Comment!</p>
+                <form onSubmit={(e) => submit(e)} className='comm-form'>
+                    <label htmlFor="postedBy">Name:</label>
+                    <input type='text' id='postedBy' name='postedBy' required placeholder='bob' autoComplete='off' value={poster} onChange={(e) => setPoster(e.target.value)} />
+                    <label htmlFor="msgBody">Comment:</label>
+                    <input type='text' id='msgBody' name='msgBody' required placeholder='nice post' autoComplete='off' value={postBody} onChange={(e) => setPostBody(e.target.value)} />
+                    <button className='comm-btn'>Post</button>
+                </form>
+            </div>
             <div className='comm-holder'>
                 {comments.length > 0 ? comments.map((comm) => {
                     return (
@@ -36,14 +46,7 @@ const Comments = () => {
                     )
                 }) : <p>No Comments Found</p>}
             </div>
-            <form onSubmit={(e) => submit(e)} className='comm-form'>
-                <label htmlFor="postedBy">Name:</label>
-                <input type='text' id='postedBy' name='postedBy' required placeholder='bob' autoComplete='off' value={poster} onChange={(e) => setPoster(e.target.value)} />
-                <label htmlFor="msgBody">Comment:</label>
-                <input type='text' id='msgBody' name='msgBody' required placeholder='nice post' autoComplete='off' value={postBody} onChange={(e) => setPostBody(e.target.value)} />
-                <button className='comm-btn'>Post</button>
-            </form>
-        </div>
+        </>
     )
 }
 
