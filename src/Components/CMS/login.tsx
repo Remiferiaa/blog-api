@@ -24,6 +24,8 @@ const Login = () => {
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 setErr(err.response?.data.message)
+                setPw('')
+                setUser('')
             } else {
                 console.error(err)
             }
@@ -31,13 +33,13 @@ const Login = () => {
     }
 
     return (
-        <div className='cms-container'>
+        <div className='cms-post-container'>
             <form onSubmit={(e) => submit(e)} className='login-form'>
-                <label htmlFor="username">Name:</label>
+                <label htmlFor="username">Username:</label>
                 <input type='text' id='username' name='username' required autoComplete='off' value={user} onChange={(e) => setUser(e.target.value)} />
-                <label htmlFor="password">Comment:</label>
+                <label htmlFor="password">Password:</label>
                 <input type='password' id='password' name='password' required autoComplete='off' value={pw} onChange={(e) => setPw(e.target.value)} />
-                {err ? <p>{err}</p> : <></>}
+                {err ? <p className='err-msg'>{err}</p> : <></>}
                 <button className='login-btn'>Post</button>
             </form>
         </div>

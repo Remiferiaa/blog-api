@@ -23,17 +23,19 @@ const Header = () => {
             </div>
         )
     }
-    
+
     const header2 = () => {
         return (
             <div className='header-inner'>
                 <Link to='/'>
                     Blog
                 </Link>
-                <Link to='/newpost'>
-                    New Post
-                </Link>
-                <button type='button' onClick={() => logout()}>LogOut</button>
+                <div className='header-content'>
+                    <Link to='/newpost'>
+                        New Post
+                    </Link>
+                    <button type='button' className='logout-btn' onClick={() => logout()}>Logout</button>
+                </div>
             </div>
         )
     }

@@ -19,9 +19,7 @@ const NewPost = () => {
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 setErr(err.response?.data.message)
-            } else {
-                console.error(err)
-            }
+            } 
         }
     }
 
@@ -34,7 +32,7 @@ const NewPost = () => {
                     <label htmlFor="postBody">Content:</label>
                     <textarea id='postBody' name='postBody' required value={body} onChange={(e) => setBody(e.target.value)} />
                     <button className='edit-btn'>Post</button>
-                    {err ? <p>{err}</p> : <></>}
+                    {err ? <p className='err-msg'>{err}</p> : <></>}
                 </form>
             </div>
         </>

@@ -45,8 +45,6 @@ const PostEdit = () => {
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 setErr('Unauthorized')
-            } else {
-                console.error(err)
             }
         }
     }
@@ -58,9 +56,7 @@ const PostEdit = () => {
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 setErr('Unauthorized')
-            } else {
-                console.error(err)
-            }
+            } 
         }
     }
 
@@ -71,18 +67,21 @@ const PostEdit = () => {
                     <label htmlFor="postTitle">Title:</label>
                     <input type='text' id='postTitle' name='postTitle' required autoComplete='off' value={title} onChange={(e) => setTitle(e.target.value)} />
                     <label htmlFor="postBody">Content:</label>
-                    <textarea id='postBody' name='postBody' required value={body} onChange={(e) => setBody(e.target.value)} />
-                    <button className='edit-btn'>Update</button>
-                    <button className='del-btn' type='button' onClick={() => delPost()}>Delete</button>
+                    <textarea id='postBody' name='postBody' required value={body} onChange={(e) => setBody(e.target.value)}/>
+                    <div className='form-btn'>
+                        <button className='edit-btn'>Update</button>
+                        <button className='del-btn' type='button' onClick={() => delPost()}>Delete</button>
+                    </div>
                 </form>
+                {err ? <p className='err-msg'>{err}</p> : <></>}
                 <hr />
-                <div>
+                <div className='comm-holder'>
                     {comments.length > 0 ? comments.map((comm) => {
                         return (
                             <div key={comm._id} className='comm-container'>
                                 <p className='comm-user'>{comm.postedBy}</p>
                                 <p className='comm-msg'>{comm.msgBody}</p>
-                                <button onClick={() => delComm(comm._id)}>Delete</button>
+                                <button className='del-btn' onClick={() => delComm(comm._id)}>Delete</button>
                             </div>
                         )
                     }) : <p>No Comments Found</p>}
