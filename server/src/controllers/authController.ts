@@ -1,8 +1,9 @@
-import 'dotenv/config'
 import user from '../models/user';
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 import passport from 'passport'
+import dotenv from 'dotenv';
+dotenv.config()
 
 export const user_login_post = async (req: Request, res: Response, next: NextFunction) => {
     const owner = await user.findOne({ username: req.body.username }).exec()

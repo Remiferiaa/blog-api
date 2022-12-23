@@ -1,4 +1,3 @@
-import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
 import passport from 'passport'
@@ -12,6 +11,8 @@ import compression from 'compression'
 import logger from 'morgan'
 import jwt from 'passport-jwt'
 import user, { IUser } from './models/user'
+import dotenv from 'dotenv';
+dotenv.config()
 
 interface ReqErr {
   status: number
