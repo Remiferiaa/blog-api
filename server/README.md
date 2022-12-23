@@ -15,6 +15,7 @@ Check the Frontend Part here [Link](https://github.com/Remiferiaa/blog-api/tree/
     ```
     DB=Your mongodb url here
     SECRET= Your Secret Key Here
+    PORT=5050
     ```
 4. In Your Mongodb collection create a collection called users and in it create a document with the following fields 
 
