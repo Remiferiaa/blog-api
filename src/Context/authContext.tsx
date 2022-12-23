@@ -18,16 +18,18 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [auth, setAuth] = useState<boolean>(false)
     useEffect(() => {
         const verify = async () => {
-            const res = await fetch(`${baseURL}/verify`, {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('token')
+            if(localStorage.getItem('token')) {
+                const res = await fetch(`${baseURL}/verify`, {
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token')
+                    }
+                })
+                if (res.status !== 200) {
+                    setAuth(false)
+                    localStorage.clear()
+                } else {
+                    setAuth(true)
                 }
-            })
-            if (res.status !== 200) {
-                setAuth(false)
-                localStorage.clear()
-            } else {
-                setAuth(true)
             }
         }
         verify()
