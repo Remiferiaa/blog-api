@@ -83,6 +83,10 @@ a {
     text-align: center;
 }
 
+.load {
+    font-size: 24px
+}
+
 .posts {
     display: flex;
     gap: 20px;

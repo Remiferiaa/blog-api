@@ -7,7 +7,7 @@ const Home = ({ status }: { status: string }) => {
     return (
         <>
             <Hero/>
-            <Suspense fallback={<p>Loading Posts...</p>}>
+            <Suspense fallback={<div className='posts load'>Loading Posts...</div>}>
                 <Post status={status} />
             </Suspense>
         </>
