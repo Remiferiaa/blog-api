@@ -78,8 +78,8 @@ a {
 }
 
 .hero {
-    padding: 60px 0;
-    font-size: calc(32px + (48 - 32) * ((100vw - 300px) / (1440 - 300)));
+    padding: 40px 0;
+    font-size: calc(24px + (36 - 24) * ((100vw - 300px) / (1440 - 300)));
     text-align: center;
 }
 
@@ -96,7 +96,7 @@ a {
 
 .post {
     padding: 10px;
-    width: 50%;
+    width: 70%;
     box-shadow: 2px 2px 32px #0f28461a, 2px 4px 4px #08233014;
 }
 
