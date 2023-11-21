@@ -25,18 +25,19 @@ export const postlist_post = [
     body('postTitle').trim().isLength({ min: 1 }).escape().withMessage("Title can't be empty"),
     body('postBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
-    (req: Request, res: Response, next: NextFunction) => {
-        const { postTitle, postBody } = req.body
-        const errors = validationResult(req)
-        const post = new posts({
-            postTitle,
-            postBody
-        })
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array()
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { postTitle, postBody } = req.body
+            const errors = validationResult(req)
+            const post = new posts({
+                postTitle,
+                postBody
             })
-        } else {
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    errors: errors.array()
+                })
+            }
             post.save((err) => {
                 if (err) {
                     return next(err)
@@ -46,13 +47,15 @@ export const postlist_post = [
                 })
             })
         }
+        catch (err) {
+            next(err)
+        }
     }
 ]
 
 export const post_get = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const content = await posts.findById(req.params.postid, '-__v').exec()
-
         if (!content) {
             return res.status(404).json({
                 error: 404,
@@ -71,15 +74,16 @@ export const post_put = [
     body('postTitle').trim().isLength({ min: 1 }).escape().withMessage("Title can't be empty"),
     body('postBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
-    (req: Request, res: Response, next: NextFunction) => {
-        const { postTitle, postBody } = req.body
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array()
-            })
-        } else {
-            posts.findByIdAndUpdate(req.params.postid, {postTitle: postTitle, postBody: postBody}, {}, function (err, result) {
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { postTitle, postBody } = req.body
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    errors: errors.array()
+                })
+            }
+            posts.findByIdAndUpdate(req.params.postid, { postTitle: postTitle, postBody: postBody }, {}, function (err, result) {
                 if (err) {
                     return res.status(400).json({
                         message: 'Post Update Failed',
@@ -89,6 +93,9 @@ export const post_put = [
                     message: 'Post Sucessfully Updated'
                 })
             })
+        }
+        catch (err) {
+            next(err)
         }
     }
 ]
@@ -132,19 +139,20 @@ export const post_commentlist_post = [
     body('postedBy').trim().isLength({ min: 1 }).escape().withMessage("Username can't be empty"),
     body('msgBody').trim().isLength({ min: 1 }).escape().withMessage("Body can't be empty"),
 
-    (req: Request, res: Response, next: NextFunction) => {
-        const { postedBy, msgBody } = req.body
-        const errors = validationResult(req)
-        const msg = new message({
-            postedBy,
-            msgBody,
-            post: req.params.postid
-        })
-        if (!errors.isEmpty()) {
-            return res.status(400).json({
-                errors: errors.array()
+    async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const { postedBy, msgBody } = req.body
+            const errors = validationResult(req)
+            const msg = new message({
+                postedBy,
+                msgBody,
+                post: req.params.postid
             })
-        } else {
+            if (!errors.isEmpty()) {
+                return res.status(400).json({
+                    errors: errors.array()
+                })
+            }
             msg.save((err) => {
                 if (err) {
                     return next(err)
@@ -159,6 +167,10 @@ export const post_commentlist_post = [
                     })
                 }
             })
+
+        }
+        catch (err) {
+            next(err)
         }
     }
 ]
