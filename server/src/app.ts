@@ -41,7 +41,14 @@ passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
 
 const app = express()
 const mongoDB: string = process.env.DB!
-mongoose.connect(mongoDB);
+const connectDB = async () => {
+    try {
+        await mongoose.connect(mongoDB);
+    } catch (error) {
+        console.error('MongoDB connection error', error)
+        process.exit(1)
+    }
+}
 const db = mongoose.connection; 
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.use(cors())
@@ -53,10 +60,11 @@ app.use(helmet())
 app.use('/', login)
 app.use('/api', posts)
 
-
-app.listen(process.env.PORT, () =>
-  console.log(`App listening on port ${process.env.PORT}`),
-); 
+connectDB().then(() => {
+    app.listen(process.env.PORT, () =>
+      console.log(`App listening on port ${process.env.PORT}`),
+    ); 
+})
 
 app.use(function (req, res, next) {
   next(createError(404));
