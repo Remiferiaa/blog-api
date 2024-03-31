@@ -12,7 +12,7 @@ const Posts = ({ status }: { status: string }) => {
     return (
         <div className='container'>
             <div className='posts'>
-                {postList.map((items) => {
+                {postList.slice().reverse().map((items) => {
                     return (
                         <div key={items._id} className='post'>
                             <Link to={`/${status}/${items._id}`} className='relative'>
