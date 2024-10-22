@@ -8,7 +8,7 @@ P.S. It might take some time for the posts to come up due to render coldstart (3
 # Links
 Client Side [Link](https://github.com/Remiferiaa/blog-api/tree/main/client)
 
-Backend Side [Link](https://github.com/Remiferiaa/blog-api/tree/main/client)
+Backend Side [Link](https://github.com/Remiferiaa/blog-api/tree/main/server)
 
 Demo [Link](https://remiferiaa.github.io/blog-api/)
 
