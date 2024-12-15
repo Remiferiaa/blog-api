@@ -1,8 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import passport from 'passport'
-import login from './routes/login'
-import posts from './routes/posts'
+import login from '../routes/login'
+import posts from '../routes/posts'
 import { Request, Response, NextFunction } from 'express'
 import cors from 'cors'
 import createError from 'http-errors'
@@ -10,7 +10,7 @@ import helmet from 'helmet'
 import compression from 'compression'
 import logger from 'morgan'
 import jwt from 'passport-jwt'
-import user, { IUser } from './models/user'
+import user, { IUser } from '../models/user'
 import dotenv from 'dotenv';
 dotenv.config()
 
